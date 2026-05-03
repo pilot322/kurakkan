@@ -1,0 +1,16 @@
+---
+import { SITE_AUTHOR } from '@/consts';
+import EmailLink from '@/components/links/EmailLink.astro';
+import GithubLink from '@/components/links/GithubLink.astro';
+import LinkedinLink from '@/components/links/LinkedinLink.astro';
+const today = new Date();
+---
+
+<footer class="pt-8 px-4 pb-8 text-center">
+	&copy; {today.getFullYear()} {SITE_AUTHOR}. All rights reserved.
+	<div class="flex justify-center gap-4 mt-4">
+		<GithubLink />
+		<LinkedinLink />
+		<EmailLink class='text-base-content'/>
+	</div>
+</footer>

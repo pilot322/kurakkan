@@ -1,0 +1,16 @@
+---
+import { SOCIAL_LINKS } from '@/consts';
+import GithubLight from '@/assets/logos/github_light.svg';
+import GithubDark from '@/assets/logos/github_dark.svg';
+import LogoLink from '@/components/links/LogoLink.astro';
+
+interface Props {
+	class?: string;
+}
+const { class: className = '' } = Astro.props;
+---
+
+<LogoLink href={SOCIAL_LINKS.github} label="GitHub" external class={className}>
+	<GithubLight class="dark:hidden" />
+	<GithubDark class="hidden dark:block" />
+</LogoLink>

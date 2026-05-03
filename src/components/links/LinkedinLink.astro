@@ -1,0 +1,14 @@
+---
+import { SOCIAL_LINKS } from '@/consts';
+import Linkedin from '@/assets/logos/linkedin.svg';
+import LogoLink from '@/components/links/LogoLink.astro';
+
+interface Props {
+	class?: string;
+}
+const { class: className = '' } = Astro.props;
+---
+
+<LogoLink href={SOCIAL_LINKS.linkedin} label="LinkedIn" external class={className}>
+	<Linkedin />
+</LogoLink>

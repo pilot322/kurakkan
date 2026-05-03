@@ -1,0 +1,21 @@
+---
+import Layout from '@/layouts/BlogPost.astro';
+import { SOCIAL_LINKS } from '@/consts';
+---
+
+<Layout
+	title="About"
+	description="About Michalis Lappas"
+	pubDate={new Date('May 02 2026')}
+>
+	<p>
+		I'm Michalis Lappas, CTO at <a href="https://ahtidahealth.com">ahtida Health</a>.
+	</p>
+
+	<p>Get in touch:</p>
+	<ul>
+		<li><a href={SOCIAL_LINKS.github}>GitHub</a></li>
+		<li><a href={SOCIAL_LINKS.linkedin}>LinkedIn</a></li>
+		<li><a href={`mailto:${SOCIAL_LINKS.email}`}>{SOCIAL_LINKS.email}</a></li>
+	</ul>
+</Layout>

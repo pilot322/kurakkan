@@ -1,0 +1,18 @@
+---
+import { Mail } from '@lucide/astro';
+import { SOCIAL_LINKS } from '@/consts';
+import LogoLink from '@/components/links/LogoLink.astro';
+
+interface Props {
+	class?: string;
+}
+const { class: className = '' } = Astro.props;
+---
+
+<LogoLink
+	href={`mailto:${SOCIAL_LINKS.email}`}
+	label="Email"
+	class:list={['text-secondary', className]}
+>
+	<Mail />
+</LogoLink>
