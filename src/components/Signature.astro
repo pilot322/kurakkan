@@ -1,0 +1,15 @@
+---
+import FormattedDate from '@/components/FormattedDate.astro';
+
+interface Props {
+	date: Date;
+	place?: string;
+}
+
+const { date, place = 'Athens' } = Astro.props;
+---
+
+<p class="text-base-content/60 leading-tight italic">
+	Michalis Lappas, <br />
+	{place}, <FormattedDate date={date} />
+</p>
