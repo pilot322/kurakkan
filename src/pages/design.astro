@@ -1,0 +1,152 @@
+---
+import BaseHead from '@/components/BaseHead.astro';
+import Footer from '@/components/Footer.astro';
+import Header from '@/components/Header.astro';
+
+const baseColors = [
+	{ name: '--color-base-100', bg: 'bg-base-100', text: 'text-base-content' },
+	{ name: '--color-base-200', bg: 'bg-base-200', text: 'text-base-content' },
+	{ name: '--color-base-300', bg: 'bg-base-300', text: 'text-base-content' },
+	{ name: '--color-base-content', bg: 'bg-base-content', text: 'text-base-100' },
+];
+
+const semanticColors = [
+	{ name: 'primary', bg: 'bg-primary', text: 'text-primary-content' },
+	{ name: 'secondary', bg: 'bg-secondary', text: 'text-secondary-content' },
+	{ name: 'accent', bg: 'bg-accent', text: 'text-accent-content' },
+	{ name: 'neutral', bg: 'bg-neutral', text: 'text-neutral-content' },
+];
+
+const stateColors = [
+	{ name: 'info', bg: 'bg-info', text: 'text-info-content' },
+	{ name: 'success', bg: 'bg-success', text: 'text-success-content' },
+	{ name: 'warning', bg: 'bg-warning', text: 'text-warning-content' },
+	{ name: 'error', bg: 'bg-error', text: 'text-error-content' },
+];
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead title="Design" description="Theme colors and tokens" />
+	</head>
+	<body class="bg-base-100">
+		<Header />
+		<main class="text-base-content w-full max-w-5xl">
+			<h1>Design</h1>
+			<p><em>The color tokens powering this theme. Switch the theme toggle to compare light and dark.</em></p>
+
+			<section class="mt-12">
+				<h2>Surfaces</h2>
+				<p>Page-level background tones and the default content color sitting on top of them.</p>
+				<div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6">
+					{
+						baseColors.map((c) => (
+							<div class={`${c.bg} ${c.text} p-6 rounded-box border border-base-300`}>
+								<div class="text-sm font-mono opacity-80">{c.name}</div>
+								<div class="mt-2 text-lg font-semibold">The quick brown fox</div>
+							</div>
+						))
+					}
+				</div>
+			</section>
+
+			<section class="mt-12">
+				<h2>Brand</h2>
+				<p>Brand and supporting accents. Each block uses <code>bg-&lt;name&gt;</code> with its paired <code>text-&lt;name&gt;-content</code>.</p>
+				<div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6">
+					{
+						semanticColors.map((c) => (
+							<div class={`${c.bg} ${c.text} p-6 rounded-box`}>
+								<div class="text-sm font-mono opacity-90">--color-{c.name}</div>
+								<div class="mt-2 text-lg font-semibold">Sample text on {c.name}</div>
+								<div class="text-xs font-mono opacity-90 mt-3">--color-{c.name}-content</div>
+							</div>
+						))
+					}
+				</div>
+			</section>
+
+			<section class="mt-12">
+				<h2>State</h2>
+				<p>Feedback colors for informational, success, warning, and error states.</p>
+				<div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6">
+					{
+						stateColors.map((c) => (
+							<div class={`${c.bg} ${c.text} p-6 rounded-box`}>
+								<div class="text-sm font-mono opacity-90">--color-{c.name}</div>
+								<div class="mt-2 text-lg font-semibold">{c.name.charAt(0).toUpperCase() + c.name.slice(1)} message</div>
+								<div class="text-xs font-mono opacity-90 mt-3">--color-{c.name}-content</div>
+							</div>
+						))
+					}
+				</div>
+			</section>
+
+			<section class="mt-12">
+				<h2>Typography</h2>
+				<p>Headings, body, and inline elements use <code>--color-base-content</code> by default; links use <code>--color-primary</code>.</p>
+				<div class="bg-base-200 text-base-content p-6 rounded-box mt-6 space-y-3">
+					<div class="text-xs font-mono opacity-70">bg-base-200 / text-base-content</div>
+					<h3 class="m-0">Heading three</h3>
+					<p class="m-0">
+						Body copy on the secondary surface. Here is an
+						<a href="#">anchor link</a>
+						styled with <code>--color-primary</code>, plus an inline
+						<code>code</code> snippet on <code>--color-base-300</code>.
+					</p>
+					<blockquote class="m-0">A blockquote borders left with <code>--color-primary</code>.</blockquote>
+				</div>
+			</section>
+
+			<section class="mt-12">
+				<h2>Cards</h2>
+				<p>Composition of surface, content, and accent tokens.</p>
+				<div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
+					<div class="bg-base-200 text-base-content p-6 rounded-box border border-base-300">
+						<div class="text-xs font-mono opacity-70 mb-2">bg-base-200 + border-base-300</div>
+						<h4 class="m-0 mb-2">Quiet card</h4>
+						<p class="m-0 text-base">A neutral surface for secondary content.</p>
+						<button class="mt-4 bg-primary text-primary-content px-4 py-2 rounded-field text-sm font-semibold cursor-pointer">
+							Primary action
+						</button>
+					</div>
+
+					<div class="bg-base-300 text-base-content p-6 rounded-box">
+						<div class="text-xs font-mono opacity-70 mb-2">bg-base-300</div>
+						<h4 class="m-0 mb-2">Elevated card</h4>
+						<p class="m-0 text-base">One step above the page background.</p>
+						<button class="mt-4 bg-secondary text-secondary-content px-4 py-2 rounded-field text-sm font-semibold cursor-pointer">
+							Secondary action
+						</button>
+					</div>
+
+					<div class="bg-primary text-primary-content p-6 rounded-box">
+						<div class="text-xs font-mono opacity-90 mb-2">bg-primary + text-primary-content</div>
+						<h4 class="m-0 mb-2 text-primary-content">Accent card</h4>
+						<p class="m-0 text-base">For high-emphasis callouts.</p>
+						<button class="mt-4 bg-accent text-accent-content px-4 py-2 rounded-field text-sm font-semibold cursor-pointer">
+							Accent action
+						</button>
+					</div>
+				</div>
+			</section>
+
+			<section class="mt-12 mb-8">
+				<h2>Borders &amp; radii</h2>
+				<div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-6">
+					<div class="bg-base-200 text-base-content p-6 border border-base-content/20" style="border-radius: var(--radius-selector)">
+						<div class="text-xs font-mono opacity-70">--radius-selector</div>
+					</div>
+					<div class="bg-base-200 text-base-content p-6 border border-base-content/20" style="border-radius: var(--radius-field)">
+						<div class="text-xs font-mono opacity-70">--radius-field</div>
+					</div>
+					<div class="bg-base-200 text-base-content p-6 border border-base-content/20" style="border-radius: var(--radius-box)">
+						<div class="text-xs font-mono opacity-70">--radius-box</div>
+					</div>
+				</div>
+			</section>
+		</main>
+		<Footer />
+	</body>
+</html>
