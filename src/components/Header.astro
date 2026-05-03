@@ -2,54 +2,139 @@
 import { SITE_TITLE } from '@/consts';
 import HeaderLink from '@/components/HeaderLink.astro';
 import Kurakkan from '@/assets/logos/kurakkan.svg';
-import { Moon, Sun } from '@lucide/astro';
+import { Moon, Sun, PanelLeft, X, Menu } from '@lucide/astro';
 ---
 
-<header class="px-4 bg-gradient-to-b from-base-200 to-base-300 shadow-md [[data-theme=dark]_&]:shadow-neutral/20">
-	<nav class="grid grid-cols-3 items-center">
-		<h2 class="m-0 text-base">
-			<a href="/" class="no-underline flex items-center gap-2 text-2xl">
-				<Kurakkan class="w-16 h-16 text-primary" />
-				{SITE_TITLE}
+<header class="px-3 sm:px-4 bg-gradient-to-b from-base-200 to-base-300 shadow-md [[data-theme=dark]_&]:shadow-neutral/20">
+	<nav class="flex items-center justify-between gap-2 sm:gap-4 py-3 sm:py-4">
+		<button
+			id="sidebar-toggle"
+			aria-label="Open navigation"
+			aria-controls="sidebar"
+			aria-expanded="false"
+			class="p-2.5 rounded-md text-base-content hover:bg-base-300 transition-colors cursor-pointer shrink-0"
+		>
+			<Menu size={26} />
+		</button>
+
+		<h2 class="m-0 text-base flex-1 min-w-0">
+			<a href="/" class="no-underline flex items-center gap-2 text-2xl sm:text-3xl">
+				<Kurakkan class="w-12 h-12 sm:w-14 sm:h-14 text-primary shrink-0" />
+				<span class="truncate">{SITE_TITLE}</span>
 			</a>
 		</h2>
-		<div class="justify-self-center space-x-2">
-			<HeaderLink href="/">Home</HeaderLink>
-			<HeaderLink href="/blog">Blog</HeaderLink>
-			<HeaderLink href="/about">About</HeaderLink>
-		</div>
-        <div class="justify-self-end">
-			<button
-				id="theme-toggle"
-				transition:persist
-				aria-label="Toggle dark mode"
-				class="p-2 rounded-md text-base-content hover:bg-base-300 transition-colors cursor-pointer"
-			>
-				<Moon id="icon-moon" size={20} />
-				<Sun id="icon-sun" size={20} class="hidden" />
-			</button>
-        </div>
+
+		<button
+			id="theme-toggle"
+			transition:persist
+			aria-label="Toggle dark mode"
+			class="p-2.5 rounded-md text-base-content hover:bg-base-300 transition-colors cursor-pointer shrink-0"
+		>
+			<Moon id="icon-moon" size={24} />
+			<Sun id="icon-sun" size={24} class="hidden" />
+		</button>
 	</nav>
 </header>
 
+<div
+	id="sidebar-backdrop"
+	class="fixed inset-0 bg-black/50 opacity-0 pointer-events-none transition-opacity duration-200 z-40"
+	aria-hidden="true"
+></div>
+
+<aside
+	id="sidebar"
+	aria-label="Site navigation"
+	class="fixed top-0 left-0 h-dvh w-72 max-w-[85vw] bg-base-100 shadow-xl z-50 -translate-x-full transition-transform duration-200 ease-out flex flex-col"
+>
+	<div class="flex items-center justify-between px-4 py-3 border-b border-base-300">
+		<span class="font-semibold text-lg text-base-content">Menu</span>
+		<button
+			id="sidebar-close"
+			aria-label="Close navigation"
+			class="p-2 rounded-md text-base-content hover:bg-base-300 transition-colors cursor-pointer"
+		>
+			<X size={22} />
+		</button>
+	</div>
+	<nav class="flex flex-col gap-1 p-4 text-lg">
+		<HeaderLink href="/" class="block w-full">Home</HeaderLink>
+		<HeaderLink href="/blog" class="block w-full">Blog</HeaderLink>
+		<HeaderLink href="/about" class="block w-full">About</HeaderLink>
+	</nav>
+</aside>
+
 <script>
-	const btn = document.getElementById('theme-toggle')!;
 	const html = document.documentElement;
-	const iconMoon = document.getElementById('icon-moon')!;
-	const iconSun = document.getElementById('icon-sun')!;
 
 	function syncIcons() {
+		const iconMoon = document.getElementById('icon-moon');
+		const iconSun = document.getElementById('icon-sun');
+		if (!iconMoon || !iconSun) return;
 		const isDark = html.getAttribute('data-theme') === 'dark';
 		iconMoon.classList.toggle('hidden', isDark);
 		iconSun.classList.toggle('hidden', !isDark);
 	}
 
-	syncIcons();
+	function setupHeader() {
+		const themeBtn = document.getElementById('theme-toggle');
+		const sidebar = document.getElementById('sidebar');
+		const backdrop = document.getElementById('sidebar-backdrop');
+		const openBtn = document.getElementById('sidebar-toggle');
+		const closeBtn = document.getElementById('sidebar-close');
+		if (!themeBtn || !sidebar || !backdrop || !openBtn || !closeBtn) return;
 
-	btn.addEventListener('click', () => {
-		const newTheme = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-		html.setAttribute('data-theme', newTheme);
-		localStorage.setItem('theme', newTheme);
 		syncIcons();
-	});
+
+		// theme-toggle has transition:persist so the same node survives navigations.
+		// Guard against re-binding the click handler on every page-load.
+		if (!themeBtn.dataset.bound) {
+			themeBtn.addEventListener('click', () => {
+				const newTheme = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+				html.setAttribute('data-theme', newTheme);
+				localStorage.setItem('theme', newTheme);
+				syncIcons();
+			});
+			themeBtn.dataset.bound = 'true';
+		}
+
+		const openSidebar = () => {
+			sidebar.classList.remove('-translate-x-full');
+			backdrop.classList.remove('opacity-0', 'pointer-events-none');
+			backdrop.classList.add('opacity-100');
+			openBtn.setAttribute('aria-expanded', 'true');
+			document.body.style.overflow = 'hidden';
+		};
+
+		const closeSidebar = () => {
+			sidebar.classList.add('-translate-x-full');
+			backdrop.classList.add('opacity-0', 'pointer-events-none');
+			backdrop.classList.remove('opacity-100');
+			openBtn.setAttribute('aria-expanded', 'false');
+			document.body.style.overflow = '';
+		};
+
+		openBtn.addEventListener('click', openSidebar);
+		closeBtn.addEventListener('click', closeSidebar);
+		backdrop.addEventListener('click', closeSidebar);
+
+		// Always close the drawer when navigating to a new page.
+		document.addEventListener('astro:before-preparation', closeSidebar, { once: true });
+	}
+
+	// Bind on initial load AND after every Astro view transition swap.
+	document.addEventListener('astro:page-load', setupHeader);
+
+	// Esc-to-close: bind once on the document (survives swaps).
+	if (!(window as any).__headerEscBound) {
+		document.addEventListener('keydown', (e) => {
+			if (e.key !== 'Escape') return;
+			const sidebar = document.getElementById('sidebar');
+			if (sidebar && !sidebar.classList.contains('-translate-x-full')) {
+				const closeBtn = document.getElementById('sidebar-close') as HTMLButtonElement | null;
+				closeBtn?.click();
+			}
+		});
+		(window as any).__headerEscBound = true;
+	}
 </script>
