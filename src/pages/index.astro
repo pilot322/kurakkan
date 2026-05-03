@@ -1,15 +1,17 @@
 ---
-import { getCollection } from 'astro:content';
+import { getCollection, getEntry, render } from 'astro:content';
 import BaseHead from '@/components/BaseHead.astro';
 import Footer from '@/components/Footer.astro';
 import FormattedDate from '@/components/FormattedDate.astro';
 import Header from '@/components/Header.astro';
 import { SITE_DESCRIPTION, SITE_TITLE } from '@/consts';
-import Signature from '@/components/Signature.astro';
 
 const posts = (await getCollection('blog'))
 	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
 	.slice(0, 5);
+
+const intro = await getEntry('blog', 'hello_world');
+const { Content: IntroContent } = await render(intro!);
 ---
 
 <!doctype html>
@@ -21,46 +23,7 @@ const posts = (await getCollection('blog'))
 		<Header />
 		<main class="text-base-content w-2/3">
 			<h1 class="mb-8">{SITE_TITLE}</h1>
-			<!-- <p> -->
-			<!-- 	I'm Michalis Lappas, CTO at <a class="text-secondary font-semibold" href="https://ahtidahealth.com">ahtida Health</a>. This is -->
-			<!-- 	where I write about technology, my projects, and whatever else is on my mind. -->
-			<!-- </p> -->
-			<p>
-				Welcome to <strong>Kurakkan</strong>, my personal site! <br />
-				A few words about me:
-			</p>
-			<p>
-				I'm Michalis Lappas, a software and machine-learning engineer
-				based in Athens, Greece.
-				<br />
-				I'm the CTO of
-				<a
-					class="text-secondary font-semibold"
-					href="https://ahtidahealth.com">ahtida Health</a
-				>, a medtech startup that aims to revolutionize the healthcare
-				paradigm for doctors and patients alike.<br />
-				I'm also working part-time in a <a href="https://deepnexus.gr/"
-					>tech company</a
-				>, doing machine learning R&D and owning full-stack projects.<br
-				/>
-
-				Finally, I'm studying <a href="https://www.ece.ntua.gr/en/"
-					>Electrical and Computer Engineering at NTUA</a
-				>.
-			</p>
-
-			<p>
-				I created this site to share progress on the projects I'm
-				working on, post random thoughts and ideas, and have somewhere
-				to be creative <em>for its own sake</em>.
-			</p>
-
-			<p>
-				<span class="text-warning">This site is a WIP.</span> Expect things
-				to change a lot around here!
-			</p>
-
-			<Signature date={new Date('2026-05-03')} />
+			<IntroContent />
 			<h2 class="mt-16">Recent posts</h2>
 			<ul>
 				{
