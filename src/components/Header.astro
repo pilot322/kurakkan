@@ -6,46 +6,52 @@ import { Moon, Sun, PanelLeft, X, Menu } from '@lucide/astro';
 ---
 
 <header class="px-3 sm:px-4 bg-gradient-to-b from-base-200 to-base-300 shadow-md [[data-theme=dark]_&]:shadow-neutral/20">
-	<nav class="flex items-center justify-between gap-2 sm:gap-4 py-3 sm:py-4">
+	<nav class="flex items-center gap-2 sm:gap-4 py-3 md:py-0 md:grid md:grid-cols-3">
 		<button
 			id="sidebar-toggle"
 			aria-label="Open navigation"
 			aria-controls="sidebar"
 			aria-expanded="false"
-			class="p-2.5 rounded-md text-base-content hover:bg-base-300 transition-colors cursor-pointer shrink-0"
+			class="md:hidden p-2.5 rounded-md text-base-content hover:bg-base-300 transition-colors cursor-pointer shrink-0"
 		>
 			<Menu size={26} />
 		</button>
 
-		<h2 class="m-0 text-base flex-1 min-w-0">
-			<a href="/" class="no-underline flex items-center gap-2 text-2xl sm:text-3xl">
-				<Kurakkan class="w-12 h-12 sm:w-14 sm:h-14 text-primary shrink-0" />
+		<h2 class="m-0 text-base flex-1 min-w-0 md:flex-none">
+			<a href="/" class="no-underline flex items-center gap-2 text-2xl">
+				<Kurakkan class="w-12 h-12 md:w-16 md:h-16 text-primary shrink-0" />
 				<span class="truncate">{SITE_TITLE}</span>
 			</a>
 		</h2>
+
+		<div class="hidden md:flex md:justify-self-center md:gap-2">
+			<HeaderLink href="/">Home</HeaderLink>
+			<HeaderLink href="/blog">Blog</HeaderLink>
+			<HeaderLink href="/about">About</HeaderLink>
+		</div>
 
 		<button
 			id="theme-toggle"
 			transition:persist
 			aria-label="Toggle dark mode"
-			class="p-2.5 rounded-md text-base-content hover:bg-base-300 transition-colors cursor-pointer shrink-0"
+			class="p-2.5 md:p-2 rounded-md text-base-content hover:bg-base-300 transition-colors cursor-pointer shrink-0 md:justify-self-end"
 		>
-			<Moon id="icon-moon" size={24} />
-			<Sun id="icon-sun" size={24} class="hidden" />
+			<Moon id="icon-moon" class="w-6 h-6 md:w-5 md:h-5" />
+			<Sun id="icon-sun" class="w-6 h-6 md:w-5 md:h-5 hidden" />
 		</button>
 	</nav>
 </header>
 
 <div
 	id="sidebar-backdrop"
-	class="fixed inset-0 bg-black/50 opacity-0 pointer-events-none transition-opacity duration-200 z-40"
+	class="md:hidden fixed inset-0 bg-black/50 opacity-0 pointer-events-none transition-opacity duration-200 z-40"
 	aria-hidden="true"
 ></div>
 
 <aside
 	id="sidebar"
 	aria-label="Site navigation"
-	class="fixed top-0 left-0 h-dvh w-72 max-w-[85vw] bg-base-100 shadow-xl z-50 -translate-x-full transition-transform duration-200 ease-out flex flex-col"
+	class="md:hidden fixed top-0 left-0 h-dvh w-72 max-w-[85vw] bg-base-100 shadow-xl z-50 -translate-x-full transition-transform duration-200 ease-out flex flex-col"
 >
 	<div class="flex items-center justify-between px-4 py-3 border-b border-base-300">
 		<span class="font-semibold text-lg text-base-content">Menu</span>
