@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
 @theme {
 	--color-primary: #af2a28;
 	--color-primary-content: #ffffff;
@@ -13,10 +15,11 @@
 	--color-neutral: #4b5563;
 	--color-neutral-content: #ffffff;
 
-	--color-base-100: #f9f5e3;
-	--color-base-200: #f0eacf;
-	--color-base-300: #e5debb;
-	--color-base-content: #0f172a;
+	--color-base-100: #FCF1EE;
+	--color-base-200: #F9E3DC;
+	--color-base-300: #F6D5CB;
+
+	--color-base-content: #2F0000;
 
 	--color-info: #2563eb;
 	--color-info-content: #ffffff;
@@ -42,26 +45,24 @@
 	--noise: 0;
 }
 
-/*
-  The CSS below this line is based off of Bear Blog's default CSS.
-  https://github.com/HermanMartinus/bearblog/blob/297026a877bc2ab2b3bdfbd6b9f7961c350917dd/templates/styles/blog/default.css
-  License MIT: https://github.com/HermanMartinus/bearblog/blob/master/LICENSE.md
- */
-
-:root {
-	--accent: #af2a28;
-	--accent-dark: #7a1d1c;
-	--black: 15, 18, 25;
-	--gray: 96, 115, 159;
-	--gray-light: 229, 233, 240;
-	--gray-dark: 34, 41, 57;
-	--gray-gradient: rgba(var(--gray-light), 50%), #fff;
-	--box-shadow:
-		0 2px 6px rgba(var(--gray), 25%), 0 8px 24px rgba(var(--gray), 33%),
-		0 16px 32px rgba(var(--gray), 33%);
-}
 
 @layer base {
+header,
+main,
+footer,
+a,
+h1, h2, h3, h4, h5, h6,
+code,
+blockquote,
+hr {
+	transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+html {
+	background: var(--color-base-100);
+	color: var(--color-base-content);
+}
+
 body {
 	font-family: var(--font-serif);
 	margin: 0;
@@ -91,7 +92,7 @@ h4,
 h5,
 h6 {
 	margin: 0 0 0.5rem 0;
-	color: rgb(var(--black));
+	color: var(--color-base-content);
 	line-height: 1.2;
 }
 h1 {
@@ -114,10 +115,10 @@ b {
 	font-weight: 700;
 }
 a {
-	color: var(--accent);
+	color: var(--color-primary);
 }
 a:hover {
-	color: var(--accent);
+	color: var(--color-secondary);
 }
 p {
 	margin-bottom: 1em;
@@ -142,7 +143,7 @@ img {
 }
 code {
 	padding: 2px 5px;
-	background-color: rgb(var(--gray-light));
+	background-color: var(--color-base-300);
 	border-radius: 2px;
 }
 pre {
@@ -153,14 +154,14 @@ pre > code {
 	all: unset;
 }
 blockquote {
-	border-left: 4px solid var(--accent);
+	border-left: 4px solid var(--color-primary);
 	padding: 0 0 0 20px;
 	margin: 0;
 	font-size: 1.333em;
 }
 hr {
 	border: none;
-	border-top: 1px solid rgb(var(--gray-light));
+	border-top: 1px solid var(--color-base-300);
 }
 @media (max-width: 720px) {
 	body {
@@ -170,6 +171,38 @@ hr {
 		padding: 1em;
 	}
 }
+}
+
+[data-theme="dark"] {
+	--color-primary: #B83331;
+	--color-primary-content: #F2CFCF;
+
+	--color-secondary: #9184AE;
+	--color-secondary-content: #ffffff;
+
+	--color-accent: #c97d2e;
+	--color-accent-content: #ffffff;
+
+	--color-neutral: #4b5563;
+	--color-neutral-content: #ffffff;
+
+	--color-base-100: #161313;
+	--color-base-200: #211C1C;
+	--color-base-300: #2C2626;
+
+	--color-base-content: #F9E3DC;
+
+	--color-info: #2563eb;
+	--color-info-content: #ffffff;
+
+	--color-success: #16a34a;
+	--color-success-content: #ffffff;
+
+	--color-warning: #d97706;
+	--color-warning-content: #ffffff;
+
+	--color-error: #dc2626;
+	--color-error-content: #ffffff;
 }
 
 .sr-only {

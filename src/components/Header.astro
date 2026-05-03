@@ -2,9 +2,10 @@
 import { SITE_TITLE } from '@/consts';
 import HeaderLink from '@/components/HeaderLink.astro';
 import Kurakkan from '@/assets/logos/kurakkan.svg';
+import { Moon, Sun } from '@lucide/astro';
 ---
 
-<header class="px-4 bg-base-100 shadow-md">
+<header class="px-4 bg-base-200 shadow-md">
 	<nav class="grid grid-cols-3 items-center">
 		<h2 class="m-0 text-base">
 			<a href="/" class="no-underline flex items-center gap-2 text-2xl">
@@ -12,13 +13,43 @@ import Kurakkan from '@/assets/logos/kurakkan.svg';
 				{SITE_TITLE}
 			</a>
 		</h2>
-		<div class="justify-self-center">
+		<div class="justify-self-center space-x-2">
 			<HeaderLink href="/">Home</HeaderLink>
 			<HeaderLink href="/blog">Blog</HeaderLink>
 			<HeaderLink href="/about">About</HeaderLink>
 		</div>
-        <div>
-            <!-- Important div! -->
+        <div class="justify-self-end">
+			<button
+				id="theme-toggle"
+				transition:persist
+				aria-label="Toggle dark mode"
+				class="p-2 rounded-md text-base-content hover:bg-base-300 transition-colors cursor-pointer"
+			>
+				<Moon id="icon-moon" size={20} />
+				<Sun id="icon-sun" size={20} class="hidden" />
+			</button>
         </div>
 	</nav>
 </header>
+
+<script>
+	const btn = document.getElementById('theme-toggle')!;
+	const html = document.documentElement;
+	const iconMoon = document.getElementById('icon-moon')!;
+	const iconSun = document.getElementById('icon-sun')!;
+
+	function syncIcons() {
+		const isDark = html.getAttribute('data-theme') === 'dark';
+		iconMoon.classList.toggle('hidden', isDark);
+		iconSun.classList.toggle('hidden', !isDark);
+	}
+
+	syncIcons();
+
+	btn.addEventListener('click', () => {
+		const newTheme = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+		html.setAttribute('data-theme', newTheme);
+		localStorage.setItem('theme', newTheme);
+		syncIcons();
+	});
+</script>

@@ -6,6 +6,7 @@ import type { ImageMetadata } from 'astro';
 import FallbackImage from '@/assets/blog-placeholder-1.jpg';
 import { SITE_TITLE } from '@/consts';
 import { Font } from 'astro:assets';
+import { ClientRouter } from 'astro:transitions';
 
 interface Props {
 	title: string;
@@ -17,6 +18,30 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
 const { title, description, image = FallbackImage } = Astro.props;
 ---
+
+<script is:inline>
+	const theme = localStorage.getItem('theme') ?? 'light';
+	document.documentElement.setAttribute('data-theme', theme);
+	document.addEventListener('astro:before-swap', (event) => {
+		const t = localStorage.getItem('theme') ?? 'light';
+		event.newDocument.documentElement.setAttribute('data-theme', t);
+	});
+</script>
+<style is:inline>
+	.preload-no-transitions *,
+	.preload-no-transitions *::before,
+	.preload-no-transitions *::after {
+		transition: none !important;
+	}
+</style>
+<script is:inline>
+	document.documentElement.classList.add('preload-no-transitions');
+	window.addEventListener('load', () => {
+		requestAnimationFrame(() => {
+			document.documentElement.classList.remove('preload-no-transitions');
+		});
+	});
+</script>
 
 <!-- Global Metadata -->
 <meta charset="utf-8" />
@@ -31,6 +56,8 @@ const { title, description, image = FallbackImage } = Astro.props;
 	href={new URL('rss.xml', Astro.site)}
 />
 <meta name="generator" content={Astro.generator} />
+
+<ClientRouter />
 
 <Font cssVariable="--font-serif" preload />
 
